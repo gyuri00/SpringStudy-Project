@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 목록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>게시글 목록</h2>
+    <a href="/api/board/form" class="button button-primary">글 쓰기</a>
+
+    <table class="u-full-width">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.boardSeq}">1</td>
+            <td><a th:href="@{/api/board/list/{id}(id=${board.boardSeq})}" th:text="${board.title}">제목</a></td>
+            <td th:text="${#strings.abbreviate(board.content, 30)}">내용</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
