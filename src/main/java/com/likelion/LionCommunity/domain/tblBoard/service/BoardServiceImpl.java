@@ -5,6 +5,7 @@ import com.likelion.LionCommunity.domain.tblBoard.dto.BoardResponseDTO;
 import com.likelion.LionCommunity.entity.TblBoard;
 import com.likelion.LionCommunity.global.response.ApiResponse;
 import com.likelion.LionCommunity.global.response.resEnum.SuccessCode;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,19 +27,17 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public ApiResponse<?> save(String title, String content) {
-        log.info("게시글 저장");
         TblBoard tblBoard = TblBoard.builder()
                 .title(title)
                 .content(content)
                 .build();
-        log.info("tblBoard : "+tblBoard.getContent());
         boardRepository.save(tblBoard);
         return ApiResponse.SUCCESS(SuccessCode.SAVE_CONTENT);
     }
 
     /**
-     * 게시글 조회
-     * @return
+     * 게시글 목록 조회
+     * @return 게시글 목록 데이터
      */
     @Override
     public List<BoardResponseDTO.searchBoard> search() {
@@ -51,6 +50,11 @@ public class BoardServiceImpl implements BoardService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 게시글 단건 조회
+     * @param id
+     * @return 게시글 단건 데이터
+     */
     @Override
     public BoardResponseDTO.searchBoard searchDetail(Long id) {
         return boardRepository.findById(id)
@@ -62,4 +66,29 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
     }
 
+    /**
+     * 게시글 수정
+     */
+    @Override
+    @Transactional
+    public ApiResponse<?> update(Long id, String title, String content) {
+        TblBoard tblBoard = boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다. ID: " + id));
+
+        // 필드 업데이트
+        tblBoard.updateBoard(title, content);
+        boardRepository.save(tblBoard);
+        return ApiResponse.SUCCESS(SuccessCode.SAVE_CONTENT);
+    }
+
+    /**
+     * 게시글 삭제
+     * @param id
+     */
+    @Override
+    @Transactional
+    public ApiResponse<?> delete(Long id) {
+        boardRepository.deleteById(id);
+        return ApiResponse.SUCCESS(SuccessCode.DELETE_BOARD);
+    }
 }
