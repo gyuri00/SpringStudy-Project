@@ -25,4 +25,9 @@ public class TblBoard extends BaseEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void updateBoard(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

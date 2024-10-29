@@ -19,6 +19,9 @@
   <div>
     <a href="/api/board/list">목록으로</a>
     <a th:href="@{/api/board/edit/{id}(id=${board.boardSeq})}" class="button">수정</a>
+    <a th:href="@{/api/board/delete/{id}(id=${board.boardSeq})}"
+       onclick="return confirm('정말 삭제하시겠습니까?');"
+       class="button button-danger">삭제</a>
   </div>
 </div>
 </body>
