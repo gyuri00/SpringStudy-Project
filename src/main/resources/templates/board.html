@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 글 등록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>게시판 글 등록</h2>
+    <form th:action="@{/api/board/save}" method="post">
+        <div class="row">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+        </div>
+
+        <div class="row">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" placeholder="내용을 입력하세요" rows="10" required></textarea>
+        </div>
+
+        <div class="row">
+            <button type="submit" class="button-primary">등록</button>
+            <a href="/api/board/list" class="button">목록으로</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
